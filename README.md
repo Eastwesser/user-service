@@ -48,6 +48,7 @@ Ensure PostgreSQL is installed and running. Configure the connection in the `.en
 ### Redis
 
 Install and start the Redis server:
+
    ```sh
    # On Ubuntu
    sudo apt update
@@ -57,6 +58,7 @@ Install and start the Redis server:
    ```
 
 Check the status of Redis:
+
    ```
    sudo systemctl status redis-server
    ```
@@ -64,6 +66,7 @@ Check the status of Redis:
 ### RabbitMQ
 
 Start RabbitMQ using Docker:
+
    ```
    docker run -d --hostname my-rabbit --name some-rabbit -p 5672:5672 -p 15672:15672 rabbitmq:3-management
    ```
@@ -71,6 +74,7 @@ Start RabbitMQ using Docker:
 ### Running the Application
 
 Start the application:
+
    ```
    uvicorn app.main:app --reload
    ```
