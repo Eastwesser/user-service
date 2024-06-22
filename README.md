@@ -17,8 +17,7 @@ User Service is a microservice for user management built using FastAPI, PostgreS
 1. Clone the repository:
 
     ```sh
-    git clone https://github.com/Eastwesser/candy-star.git
-    cd candy-star/backend/user-service
+    git clone https://github.com/Eastwesser/user-service.git
     ```
 
 2. Create and activate a virtual environment:
