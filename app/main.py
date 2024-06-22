@@ -1,3 +1,4 @@
+# app/main.py
 import os
 
 import aio_pika
@@ -14,9 +15,17 @@ from sqlalchemy.ext.declarative import declarative_base
 from app.db.session import AsyncSessionLocal
 from app.routers import user
 
+# Загрузить переменные окружения из файла .env
 load_dotenv()
 
+# Получить переменные окружения
 SENTRY_DSN = os.getenv("SENTRY_DSN")
+DATABASE_URL = os.getenv("DATABASE_URL")
+REDIS_URL = os.getenv("REDIS_URL")
+RABBITMQ_URL = os.getenv("RABBITMQ_URL")
+
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL environment variable is not set")
 
 sentry_sdk.init(
     dsn=SENTRY_DSN,
@@ -26,9 +35,6 @@ sentry_sdk.init(
 app = FastAPI()
 app.add_middleware(SentryAsgiMiddleware)
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-REDIS_URL = os.getenv("REDIS_URL")
-RABBITMQ_URL = os.getenv("RABBITMQ_URL")
 engine = create_async_engine(DATABASE_URL, echo=True)
 Base = declarative_base()
 
