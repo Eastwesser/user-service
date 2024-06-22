@@ -1,10 +1,13 @@
 import asyncio
+import os
 
 import aio_pika
 
+RABBITMQ_URL = os.getenv("RABBITMQ_URL")
+
 
 async def send_message(message: str):
-    connection = await aio_pika.connect_robust("amqp://guest:guest@localhost/")
+    connection = await aio_pika.connect_robust(RABBITMQ_URL)
     async with connection:
         channel = await connection.channel()
         queue = await channel.declare_queue("test_queue")
@@ -15,7 +18,7 @@ async def send_message(message: str):
 
 
 async def receive_messages():
-    connection = await aio_pika.connect_robust("amqp://guest:guest@localhost/")
+    connection = await aio_pika.connect_robust(RABBITMQ_URL)
     async with connection:
         channel = await connection.channel()
         queue = await channel.declare_queue("test_queue")

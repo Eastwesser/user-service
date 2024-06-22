@@ -27,6 +27,8 @@ app = FastAPI()
 app.add_middleware(SentryAsgiMiddleware)
 
 DATABASE_URL = os.getenv("DATABASE_URL")
+REDIS_URL = os.getenv("REDIS_URL")
+RABBITMQ_URL = os.getenv("RABBITMQ_URL")
 engine = create_async_engine(DATABASE_URL, echo=True)
 Base = declarative_base()
 
@@ -51,12 +53,12 @@ async def read_root():
 
 
 async def connect_rabbitmq():
-    connection = await aio_pika.connect_robust("amqp://guest:guest@localhost/")
+    connection = await aio_pika.connect_robust(RABBITMQ_URL)
     return connection
 
 
 async def connect_redis():
-    redis = await aioredis.from_url("redis://localhost")
+    redis = await aioredis.from_url(REDIS_URL)
     return redis
 
 

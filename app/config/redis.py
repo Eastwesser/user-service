@@ -2,7 +2,7 @@ import os
 
 import aioredis
 
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost")
+REDIS_URL = os.getenv("REDIS_URL")
 
 redis = aioredis.from_url(REDIS_URL)
 
