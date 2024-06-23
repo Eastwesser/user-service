@@ -23,3 +23,8 @@ async def read_users(session: AsyncSession = Depends(get_session)):
 async def create_new_user(user: UserCreate, session: AsyncSession = Depends(get_session)):
     new_user = await create_user(session, user)
     return new_user
+
+
+@router.get("/")
+async def read_users():
+    return [{"username": "user1"}, {"username": "user2"}]

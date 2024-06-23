@@ -79,6 +79,9 @@ Start the application:
    uvicorn app.main:app --reload
    ```
 
+Or: uvicorn app.main:app --reload --reload-dir app --host 0.0.0.0 --port 8001
+
+
 The application will be available at http://127.0.0.1:8001.
 
 API documentation will be available at http://127.0.0.1:8001/docs.
