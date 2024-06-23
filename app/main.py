@@ -1,4 +1,3 @@
-# app/main.py
 import os
 
 import aio_pika
@@ -9,16 +8,15 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
 from sqlalchemy import text
-from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
+import app.routers.user as user_router
 from app.db.session import AsyncSessionLocal
-from app.routers import user
 
-# Загрузить переменные окружения из файла .env
 load_dotenv()
 
-# Получить переменные окружения
 SENTRY_DSN = os.getenv("SENTRY_DSN")
 DATABASE_URL = os.getenv("DATABASE_URL")
 REDIS_URL = os.getenv("REDIS_URL")
@@ -36,6 +34,11 @@ app = FastAPI()
 app.add_middleware(SentryAsgiMiddleware)
 
 engine = create_async_engine(DATABASE_URL, echo=True)
+AsyncSessionLocal = sessionmaker(
+    bind=engine,
+    class_=AsyncSession,
+    expire_on_commit=False
+)
 Base = declarative_base()
 
 
@@ -50,7 +53,7 @@ async def shutdown():
     await engine.dispose()
 
 
-app.include_router(user.router, prefix="/users", tags=["users"])
+app.include_router(user_router.router, prefix="/users", tags=["users"])
 
 
 @app.get("/")
